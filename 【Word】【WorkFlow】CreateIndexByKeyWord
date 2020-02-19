@@ -1,0 +1,31 @@
+Sub CreateIndexByKeyWord()
+Dim keyword(0 To 100) As String
+'set index
+keyword(0) = "第一條"
+keyword(78) = "第七十九條"
+keyword(79) = "第八十條"
+keyword(80) = "第八十一條"
+keyword(81) = "第八十二條"
+keyword(82) = "第八十三條"
+keyword(83) = "第八十四條"
+keyword(84) = "第八十五條"
+keyword(85) = "第八十六條"
+For i = 0 To 80
+    Selection.GoTo What:=wdGoToHeading, Which:=wdGoToFirst
+    Pages = ""
+    Text = keyword(i)
+    lastPages = ""
+    Do While Selection.Find.Execute(Text) = True
+        If lastPages <> Selection.Information(wdActiveEndPageNumber) Then
+            lastPages = Selection.Information(wdActiveEndPageNumber)
+            If Pages <> "" Then
+                Pages = Pages & ", "
+            End If
+            Pages = Pages & lastPages
+        End If
+    Loop
+    Selection.GoTo What:=wdGoToPage, Which:=wdGoToLast
+    Line = Text  + vbTab + Pages + vbCrLf
+    ActiveDocument.Content.InsertAfter Line
+Next i
+End Sub
