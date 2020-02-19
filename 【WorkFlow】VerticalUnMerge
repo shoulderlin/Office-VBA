@@ -1,0 +1,18 @@
+'垂直版相同內容自動解除合併欄位，並填入前一儲存格內容！
+Sub VerticalUnMerge()
+    Dim TargetColumn As String 'Input Value!!
+
+    TargetColumn = InputBox("請輸入處理欄：","自動解除合併欄位，並填入前一儲存格內容", "A")
+
+
+    Range(TargetColumn & ":" & TargetColumn).Select
+    Selection.UnMerge
+
+    '選取空白儲存格
+    Range(TargetColumn & ":" & TargetColumn).Select
+    Selection.SpecialCells(xlCellTypeBlanks).Select
+
+    '讓各儲存格為其上一格的值
+    Selection.FormulaR1C1 = "=R[-1]C"
+
+End Sub
