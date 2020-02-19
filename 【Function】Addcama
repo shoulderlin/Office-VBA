@@ -4,7 +4,7 @@ Function Addcama(ByVal Rng As Range, ByVal Delim As String) As String
   Rowcount = ActiveSheet.UsedRange.Rows.Count
   ColumnCount = ActiveSheet.UsedRange.Columns.Count
   For Each Cell In Rng
-    If Cell <> "" Then
+    If Cell <> "" Then '忽略空白
       TempString = TempString & Delim & Cell
     End If
   Next
