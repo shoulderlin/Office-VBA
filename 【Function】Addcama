@@ -1,0 +1,12 @@
+Function Addcama(ByVal Rng As Range, ByVal Delim As String) As String
+  Dim I, A, Rowcount, ColumnCount As Integer
+  Dim TempString As String
+  Rowcount = ActiveSheet.UsedRange.Rows.Count
+  ColumnCount = ActiveSheet.UsedRange.Columns.Count
+  For Each Cell In Rng
+    If Cell <> "" Then
+      TempString = TempString & Delim & Cell
+    End If
+  Next
+  Addcama = Right(TempString, Len(TempString) - Len(Delim))
+End Function
