@@ -1,0 +1,42 @@
+Function ContainStr(ByVal str As String, ByVal ref As String, ByVal LogicType As Integer) As String
+'包含特定關鍵字
+'str：關鍵字，多個值以逗號分隔
+'ref：查詢欄位
+'LogicType：0:OR；1：AND；2：NOR
+Dim YsCount, NoCount As Integer
+strArray = Split(str, ",")
+For Each stritem In strArray
+    If ref Like "*" & stritem & "*" Then
+        YsCount = YsCount + 1
+    Else
+        NoCount = NoCount + 1
+    End If
+Next
+
+Select Case LogicType
+    Case 0 'OR 只要有一個有回傳"是"
+        If YsCount > 0 Then
+            ContainStr = "是"
+        Else
+            ContainStr = "否"
+        End If
+    Case 1 'AND 全部都有回傳"是"
+        If NoCount = 0 Then
+            ContainStr = "是"
+        Else
+            ContainStr = "否"
+        End If
+    Case 2 'NOR 全部都沒有才回傳"否"
+        If YsCount = 0 Then
+            ContainStr = "否"
+        Else
+            ContainStr = "是"
+        End If
+    Case 3 'XOR 只要有一個沒有就回傳"否"
+        If NoCount > 0 Then
+            ContainStr = "否"
+        Else
+            ContainStr = "是"
+        End If
+End Select
+End Function
