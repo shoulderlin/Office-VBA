@@ -1,0 +1,174 @@
+Function IDCorrect(ByVal ID As String) As String
+'ID like A113852154
+Dim A(1 To 10) As Variant
+Dim Result As Integer
+Dim I As Integer
+For I = 1 To 10
+    A(I) = Mid(ID, I, 1)
+Next
+Result = FirstCode(A(1))
+If A(2) > 2 Or A(2) < 1 Then
+    IDCorrect = "違法，性別"
+    Exit Function
+End If
+For I = 2 To 9
+    Result = Result + (A(I) * (10 - I))
+Next
+If CInt((10 - (Result Mod 10)) Mod 10) = CInt(Right(ID, 1)) Then
+    IDCorrect = "合法"
+Else
+    IDCorrect = "違法，檢查碼為" & (10 - (Result Mod 10)) Mod 10
+End If
+End Function
+
+
+Function CreateID(ByVal Area As String, ByVal sex As String)
+'Area like "臺北市"
+'Sex like "男"
+ID = AreaFirstCode(Area) + CStr(sexCode(sex))
+CreateID = ID
+While Len(ID) < 9
+    ID = ID & Application.RandBetween(0, 9)
+Wend
+CreateID = ID + checkcode(ID)
+End Function
+
+Function checkcode(ByVal ID As String) As String
+Dim A(1 To 9) As Variant
+Dim Result As Integer
+Dim I As Integer
+
+For I = 1 To 9
+    A(I) = Mid(ID, I, 1)
+Next
+Result = FirstCode(A(1))
+
+For I = 2 To 9
+    Result = Result + (A(I) * (10 - I))
+Next
+
+checkcode = (10 - (Result Mod 10)) Mod 10
+End Function
+
+Function sexCode(ByVal sex As String) As Integer
+Select Case sex
+Case "男", "Male"
+sexCode = 1
+Case "女", "Female"
+sexCode = 2
+End Select
+End Function
+
+Function AreaFirstCode(ByVal Area As String) As String
+Select Case Area
+Case "臺北市", "台北市"
+AreaFirstCode = "A"
+Case "臺中市", "台中市"
+AreaFirstCode = "B"
+Case "基隆市", "基隆市"
+AreaFirstCode = "C"
+Case "臺南市", "台南市"
+AreaFirstCode = "D"
+Case "高雄市", "高雄市"
+AreaFirstCode = "E"
+Case "新北市", "臺北縣", "台北縣"
+AreaFirstCode = "F"
+Case "宜蘭縣", "宜蘭縣"
+AreaFirstCode = "G"
+Case "桃園縣", "桃園市"
+AreaFirstCode = "H"
+Case "嘉義市", "嘉義市"
+AreaFirstCode = "I"
+Case "新竹縣", "新竹縣"
+AreaFirstCode = "J"
+Case "苗栗縣", "苗栗縣"
+AreaFirstCode = "K"
+Case "臺中縣", "台中縣"
+AreaFirstCode = "L"
+Case "南投縣", "南投縣"
+AreaFirstCode = "M"
+Case "彰化縣", "彰化縣"
+AreaFirstCode = "N"
+Case "新竹市", "新竹市"
+AreaFirstCode = "O"
+Case "雲林縣", "雲林縣"
+AreaFirstCode = "P"
+Case "嘉義縣", "嘉義縣"
+AreaFirstCode = "Q"
+Case "臺南縣", "台南縣"
+AreaFirstCode = "R"
+Case "高雄縣", "高雄縣"
+AreaFirstCode = "S"
+Case "屏東縣", "屏東縣"
+AreaFirstCode = "T"
+Case "花蓮縣", "花蓮縣"
+AreaFirstCode = "U"
+Case "臺東縣", "台東縣"
+AreaFirstCode = "V"
+Case "金門縣", "金門縣"
+AreaFirstCode = "W"
+Case "澎湖縣", "澎湖縣"
+AreaFirstCode = "X"
+Case "陽明山", "陽明山"
+AreaFirstCode = "Y"
+Case "連江縣", "連江縣"
+AreaFirstCode = "Z"
+End Select
+End Function
+
+Function FirstCode(ByVal IDENG As String) As Integer
+Select Case IDENG
+Case "A"
+FirstCode = 1
+Case "B"
+FirstCode = 10
+Case "C"
+FirstCode = 19
+Case "D"
+FirstCode = 28
+Case "E"
+FirstCode = 37
+Case "F"
+FirstCode = 46
+Case "G"
+FirstCode = 55
+Case "H"
+FirstCode = 64
+Case "I"
+FirstCode = 39
+Case "J"
+FirstCode = 73
+Case "K"
+FirstCode = 82
+Case "L"
+FirstCode = 2
+Case "M"
+FirstCode = 11
+Case "N"
+FirstCode = 20
+Case "O"
+FirstCode = 48
+Case "P"
+FirstCode = 29
+Case "Q"
+FirstCode = 38
+Case "R"
+FirstCode = 47
+Case "S"
+FirstCode = 56
+Case "T"
+FirstCode = 65
+Case "U"
+FirstCode = 74
+Case "V"
+FirstCode = 83
+Case "W"
+FirstCode = 21
+Case "X"
+FirstCode = 3
+Case "Y"
+FirstCode = 12
+Case "Z"
+FirstCode = 30
+End Select
+End Function
