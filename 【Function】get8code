@@ -1,0 +1,71 @@
+'許可證字號轉八碼
+Function get8code(ByVal str As String) As String
+'署、部
+Dim tempstr, code As String
+'輸、陸輸、製
+'第一碼：區分署、部
+Select Case Mid(str, 2, 1)
+  Case "署"
+  tempstr = "0"
+  Case "部"
+  tempstr = "1"
+End Select
+'第二碼：區分陸、外銷
+If InStr(1, str, "陸") = 0 And InStr(1, str, "外") = 0 Then
+  tempstr = tempstr & "0"
+End If
+If InStr(1, str, "陸") > 0 Then
+  tempstr = tempstr & "1"
+End If
+If InStr(1, str, "外") > 0 Then
+  tempstr = tempstr & "2"
+End If
+'第三碼：區分製造、輸入
+If InStr(1, str, "製") > 0 Then
+  tempstr = tempstr & "0"
+End If
+If InStr(1, str, "輸") > 0 Then
+  tempstr = tempstr & "1"
+End If
+'第四碼：區分是否第一等級
+If InStr(1, str, "壹") > 0 Then
+  tempstr = tempstr & "1"
+Else
+  tempstr = tempstr & "0"
+End If
+'code = Mid(str, InStr(1, str, "第") + 1, 6)
+'因部分許可證字號會有漏字情形，改擷取[-7:-2]
+code = Left(Right(str, 7), 6)
+
+Select Case tempstr
+  Case "0000" '衛署醫器製
+  get8code = "05" & code
+  Case "0110" '衛署醫器陸輸
+  get8code = "42" & code
+  Case "0200" '衛署醫器外製
+  get8code = "45" & code
+  Case "0010" '衛署醫器輸
+  get8code = "06" & code
+  Case "0001" '衛署醫器製壹
+  get8code = "43" & code
+  Case "0111" '衛署醫器陸輸壹
+  get8code = "46" & code
+  Case "0011" '衛署醫器輸壹
+  get8code = "44" & code
+  Case "1000" '衛部醫器製
+  get8code = "55" & code
+  Case "1110" '衛部醫器陸輸
+  get8code = "92" & code
+  Case "1200" '衛部醫器外製
+  get8code = "95" & code
+  Case "1010" '衛部醫器輸
+  get8code = "56" & code
+  Case "1001" '衛部醫器製壹
+  get8code = "93" & code
+  Case "1111" '衛部醫器陸輸壹
+  get8code = "96" & code
+  Case "1011" '衛部醫器輸壹
+  get8code = "94" & code
+End Select
+
+End Function
