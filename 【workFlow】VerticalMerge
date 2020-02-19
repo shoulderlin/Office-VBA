@@ -1,0 +1,33 @@
+'垂直版相同內容自動合併欄位
+Sub VerticalMerge()
+Dim I, A, Rowcount As Long
+Dim TargetColumn, DefaultValue As String 'Input Value!!
+If ActiveCell.Column>26 then
+DefaultValue = Chr((ActiveCell.Column\26)+64)&Chr(((ActiveCell.Column-26)\26)+64)
+Else
+DefaultValue = Chr(ActiveCell.Column+64)
+End IF
+
+'要求使用者輸入處理欄位
+TargetColumn = InputBox("請輸入處理欄：", "自動合併相同內容欄位" , DefaultValue)
+Rowcount = ActiveSheet.UsedRange.Rows.Count  '取得工作表最大欄位
+
+For I = 1 To Rowcount
+     '如果連續兩格的值不同，直接進入下一個迴圈
+    If Cells(I, TargetColumn) = Cells(I + 1, TargetColumn) Then
+        '逐一比對目標儲存格的內容，直到發現不同內容的儲存格！
+        For A = 1 To Rowcount - 1
+            If Cells(I, TargetColumn) <> Cells(I + A, TargetColumn) Then
+                DataEnd = I + A - 1
+                A = Rowcount - 1
+            End If
+        Next
+        '清除目標儲存格的下一格至不同內容的儲存格的上一格這個範圍間的儲存格內容（避免出現因儲存格含有內容之錯誤訊息），之後可以考慮改為避免出現系統的錯誤訊息。
+        Range(Cells(I + 1, TargetColumn), Cells(DataEnd, TargetColumn)).Clear
+        '合併目標儲存格至不同內容的儲存格的上一格這個範圍間之儲存格
+        Range(Cells(I, TargetColumn), Cells(DataEnd, TargetColumn)).Merge
+        '直接將處理之儲存格設定至下個不同內容的儲存格
+        I = DataEnd
+    End If
+Next
+End Sub
