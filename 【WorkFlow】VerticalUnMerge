@@ -1,9 +1,23 @@
 '垂直版相同內容自動解除合併欄位，並填入前一儲存格內容！
 Sub VerticalUnMerge()
     Dim TargetColumn As String 'Input Value!!
+    Dim i, rowc As Long
+    rowc = ActiveSheet.UsedRange.Rows.Count
+    If ActiveCell.Column > 26 Then
+        DefaultValue = Chr((ActiveCell.Column \ 26) + 64) & Chr(((ActiveCell.Column - 26) \ 26) + 64)
+    Else
+        DefaultValue = Chr(ActiveCell.Column + 64)
+    End If
 
-    TargetColumn = InputBox("請輸入處理欄：","自動解除合併欄位，並填入前一儲存格內容", "A")
-
+    '要求使用者輸入處理欄位
+    TargetColumn = InputBox("請輸入處理欄：", "自動解除合併欄位，並填入前一儲存格內容", DefaultValue)
+    For i = 1 To rowc
+        If IsEmpty(Cells(i, TargetColumn)) Then
+            Cells(i, TargetColumn) = 0
+        Else
+            Exit For
+        End If
+    Next
 
     Range(TargetColumn & ":" & TargetColumn).Select
     Selection.UnMerge
