@@ -1,18 +1,19 @@
 Sub 編表格序號()
 Dim oRow As Row
 On Error GoTo Err
-
 sn = 1
 errtag = 0
 For i = 2 To ActiveDocument.Tables.Item(1).Rows.Count
     ActiveDocument.Tables.Item(1).Cell(i, 1).Select
+    '如果曾經出錯，略過輸入跟加碼的東做
     If errtag <> 1 Then
         Selection.TypeText Text:=sn
         sn = sn + 1
     End If
+    '重置錯誤標記
     errtag = 0
 Next
-
+'錯誤處理：加上一個標記
 Err:
 errtag = 1
 Resume Next
